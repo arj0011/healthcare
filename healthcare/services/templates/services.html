@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Services{% endblock %}
+{% block stylesheet %}
+    {{ super() }}
+    <style>
+        /* General pagination styles */
+.pagination {
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    margin: 20px 0; /* Space above and below the pagination */
+    font-family: Arial, sans-serif; /* Font style */
+}
+
+.page-items {
+    margin-right: 20px; /* Space between items and links */
+    font-weight: bold; /* Make the page range bold */
+}
+
+.pagination a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    padding: 8px 12px; /* Space around links */
+    border: 1px solid #007BFF; /* Border for links */
+    border-radius: 4px; /* Rounded corners */
+    margin: 0 4px; /* Space between links */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.pagination a:hover {
+    background-color: #007BFF; /* Background on hover */
+    color: #fff; /* Text color on hover */
+}
+
+.pagination strong {
+    padding: 8px 12px; /* Space around the current page */
+    border: 1px solid #ccc; /* Border for current page */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #f8f9fa; /* Light background for current page */
+}
+
+/* Ellipsis style */
+.ellipsis {
+    padding: 8px 12px; /* Space around ellipsis */
+    color: #999; /* Color for ellipsis */
+}
+
+/* Positioning the pagination at the bottom left */
+.footer-pagination {
+    position: fixed; /* Fixed position */
+    bottom: 20px; /* Distance from bottom */
+    left: 20px; /* Distance from left */
+}
+
+    </style>
+{% endblock %}
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Services</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('home.index') }}">Home</a></li>
+                <li class="breadcrumb-item text-primary active" aria-current="page">Services</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+ <!-- Service Start -->
+ <div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <p class="d-inline-block border rounded-pill py-1 px-4">Services</p>
+            <h1>Health Care Solutions</h1>
+        </div>
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item bg-light rounded h-100 p-5">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
+                        <i class="{{service.icon}} text-primary fs-4"></i>
+                    </div>
+                    <h4 class="mb-3">{{service.name}}</h4>
+                    <p class="mb-4">{{service.description}}</p>
+                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <p></p>
+    {% macro render_pagination(pagination, services) %}
+    <div class=page-items>
+      {{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}
+    </div>
+    <div class=pagination>
+      {% for page in pagination.iter_pages() %}
+        {% if page %}
+          {% if page != pagination.page %}
+            <a href="{{ url_for('services.index', page=page) }}">{{ page }}</a>
+          {% else %}
+            <strong>{{ page }}</strong>
+          {% endif %}
+        {% else %}
+          <span class=ellipsis>…</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endmacro %}
+  {{ render_pagination(pagination, 'services') }}  
+</div>
+<!-- Service End -->
+{% endblock %}
+{% block javascripts %}{% endblock %}
